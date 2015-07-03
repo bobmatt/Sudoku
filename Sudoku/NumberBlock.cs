@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sudoku
 {
@@ -91,6 +88,17 @@ namespace Sudoku
             {
                 return value;
             }
+            set
+            {
+                this.value = value;
+                if (value != unknownValue)
+                {
+                    possibleValues = new List<int>();
+                } else
+                {
+                    possibleValues = new List<int>(rangeOfValues);
+                }
+            }
         }
 
         // This attribute indicates whether or not the block value has been set.
@@ -105,7 +113,6 @@ namespace Sudoku
         // This attribute represents the set of possible values for the block.
         // If the value is set, a null list will be returned.
         // Setting the possibleValues will cause the block value to be set if only one possible value remains
-
         public List<int> PossibleValues
         {
             get
@@ -133,6 +140,14 @@ namespace Sudoku
             }
         }
 
+        public List<int> RangeOfValues
+        {
+            get
+            {
+                return rangeOfValues;
+            }
+        }
+
         // This the the value representing a square with an unknown value
         private static readonly int unknownValue = 0;
 
@@ -153,6 +168,8 @@ namespace Sudoku
         // block's row, column and grid, possible value are removed from the list.
         private List<int> possibleValues;
 
+        private List<int> rangeOfValues;
+
         //Constructor
         // row - row position of the block within the puzzle
         // column - column position of the block within the puzzle
@@ -167,6 +184,7 @@ namespace Sudoku
 
             // Initialize puzzle size
             var gridSize = subGridSize * subGridSize;
+            rangeOfValues = new List<int>(Enumerable.Range(1, gridSize).ToList());
 
             // Validate row parameter
             if ((row < 0) || (row >= gridSize))
@@ -180,17 +198,15 @@ namespace Sudoku
             if ((value >= 1) && (value <= gridSize))
             {
                 // Value is specified
-                this.value = value;
-                possibleValues = new List<int>();
+                Value = value;
             } else if ((value == -1) || (value == unknownValue))
             {
-                this.value = unknownValue;
-                possibleValues = new List<int>(Enumerable.Range(1, gridSize).ToList());
+                Value = unknownValue;
             }
             else {
                 // Value is invalid
                 throw new ValueException(value.ToString() + " is not a valid block value");
-            } 
+            }
 
 	    	// Set the block position
     		this.row = row;

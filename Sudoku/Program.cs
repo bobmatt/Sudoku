@@ -14,28 +14,28 @@ namespace Sudoku
         {
 
             // Traditional 9x9 sudoku   
-            SudokuSolver sudoku = new SudokuSolver("C:\\SudokuData\\sudoku1.txt");
-            var result = sudoku.SolvePuzzle();
-            var validAnswer = sudoku.ValidateAnswer("C:\\SudokuData\\sudoku1_answer.txt");
+            SudokuSolver solver = new SudokuSolver("C:\\SudokuData\\sudoku1.txt");
+            var result = solver.SolvePuzzle();
+            var validAnswer = solver.ValidatePuzzle("C:\\SudokuData\\sudoku1_answer.txt");
             MessageBox.Show("Puzzle solved:  " + result.ToString() + "\n" + 
                 "Result valid:  " + validAnswer.ToString() + "\n\n" +
-                sudoku.PuzzleAnswer());
+                solver.PuzzleText());
 
             // 4x4 sudoku
-            sudoku = new SudokuSolver("C:\\SudokuData\\sudoku2.txt");
-            result = sudoku.SolvePuzzle();
-            validAnswer = sudoku.ValidateAnswer("C:\\SudokuData\\sudoku2_answer.txt");
+            solver = new SudokuSolver("C:\\SudokuData\\sudoku2.txt");
+            result = solver.SolvePuzzle();
+            validAnswer = solver.ValidatePuzzle("C:\\SudokuData\\sudoku2_answer.txt");
             MessageBox.Show("Puzzle solved:  " + result.ToString() + "\n" +
                 "Result valid:  " + validAnswer.ToString() + "\n\n" +
-                sudoku.PuzzleAnswer());
+                solver.PuzzleText());
 
             // 16x16 sudoku
-            sudoku = new SudokuSolver("C:\\SudokuData\\sudoku3.txt");
-            result = sudoku.SolvePuzzle();
-            validAnswer = sudoku.ValidateAnswer("C:\\SudokuData\\sudoku3_answer.txt");
+            solver = new SudokuSolver("C:\\SudokuData\\sudoku3.txt");
+            result = solver.SolvePuzzle();
+            validAnswer = solver.ValidatePuzzle("C:\\SudokuData\\sudoku3_answer.txt");
             MessageBox.Show("Puzzle solved:  " + result.ToString() + "\n" +
                 "Result valid:  " + validAnswer.ToString() + "\n\n" +
-                sudoku.PuzzleAnswer());
+                solver.PuzzleText());
 
         }
 

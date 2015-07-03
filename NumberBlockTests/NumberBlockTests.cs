@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sudoku;
+
 namespace SudokuTests
 {
     [TestClass]
@@ -106,58 +107,46 @@ namespace SudokuTests
         }
 
         [TestMethod]
-        public void NumberBlockValueNotSet()
+        public void NumberBlockConstructorSuccessful()
         {
-            List<int> possibleValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-
-            // Block[0][0] is unknown
             try
             {
-                NumberBlock nb = new NumberBlock(0, 0, 4);
+                NumberBlock nb = new NumberBlock(1, 2, 3);
                 Assert.IsFalse(nb.ValueSet);
-                Assert.AreEqual(0, nb.Row);
-                Assert.AreEqual(0, nb.Column);
-                Assert.AreEqual(0, nb.Grid);
-                var nbValues = nb.PossibleValues;
-                Assert.AreEqual(nbValues.Count, possibleValues.Count);
-                foreach (var value in nbValues)
-                {
-                    Assert.IsTrue(possibleValues.Contains(value));
-                }
+                Assert.AreEqual(nb.PossibleValues.Count, 9);
+                Assert.AreEqual(nb.Row, 1);
+                Assert.AreEqual(nb.Column, 2);
+                Assert.AreEqual(nb.Grid, 0);
+                Assert.AreEqual(nb.RangeOfValues.Count, 9);
             }
             catch (NumberBlock.PositionException e)
             {
-                Assert.Fail("No exception should have been thrown, PositionException thrown");
+                Assert.Fail("Constructor should not have thrown the PositionExcpetion");
             }
             catch (NumberBlock.ValueException e)
             {
-                Assert.Fail("No exception should have been thrown, ValueException thrown");
+                Assert.Fail("Constructor should not have thrown the ValueException");
             }
-        }
 
-        [TestMethod]
-        public void NumberBlockValueSet()
-        {
-
-            // Block{5][8] is set to 9
             try
             {
-                NumberBlock nb = new NumberBlock(5, 8, 3, 9);
+                NumberBlock nb = new NumberBlock(4, 3, 3, 8);
                 Assert.IsTrue(nb.ValueSet);
-                Assert.AreEqual(5, nb.Row);
-                Assert.AreEqual(8, nb.Column);
-                Assert.AreEqual(5, nb.Grid);
-                Assert.AreEqual(9, nb.Value);
+                Assert.AreEqual(nb.Value, 8);
+                Assert.AreEqual(nb.Row, 4);
+                Assert.AreEqual(nb.Column, 3);
+                Assert.AreEqual(nb.Grid, 4);
+                Assert.AreEqual(nb.PossibleValues.Count, 0);
+                Assert.AreEqual(nb.RangeOfValues.Count, 9);
             }
             catch (NumberBlock.PositionException e)
             {
-                Assert.Fail("No exception should have been raised, PositionException raised");
+                Assert.Fail("Constructor should not have thrown the PositionExcpetion");
             }
             catch (NumberBlock.ValueException e)
             {
-                Assert.Fail("No exception should have been raised, ValueException raised");
+                Assert.Fail("Constructor should not have thrown the ValueException");
             }
-
         }
 
         [TestMethod]
@@ -179,9 +168,8 @@ namespace SudokuTests
                 Assert.Fail("No exception should have been raised, ValueException raised");
             }
             Assert.IsFalse(nb.ValueSet);
-            var blockPossibleValues = nb.PossibleValues;
-            Assert.AreEqual(possibleValues.Count, blockPossibleValues.Count);
-            foreach (var value in blockPossibleValues)
+            Assert.AreEqual(possibleValues.Count, nb.PossibleValues.Count);
+            foreach (var value in nb.PossibleValues)
             {
                 Assert.IsTrue(possibleValues.Contains(value));
             }
@@ -189,10 +177,9 @@ namespace SudokuTests
             // Only even numbers possible
             possibleValues = new List<int>() { 2, 4, 6, 8 };
             nb.PossibleValues = possibleValues;
-            blockPossibleValues = nb.PossibleValues;
-            Assert.AreEqual(possibleValues.Count, blockPossibleValues.Count);
+            Assert.AreEqual(possibleValues.Count, nb.PossibleValues.Count);
             Assert.IsFalse(nb.ValueSet);
-            foreach (var value in blockPossibleValues)
+            foreach (var value in nb.PossibleValues)
             {
                 Assert.IsTrue(possibleValues.Contains(value));
             }
@@ -200,6 +187,7 @@ namespace SudokuTests
             // Only the value 6 left
             possibleValues = new List<int> { 6 };
             nb.PossibleValues = possibleValues;
+            Assert.AreEqual(nb.PossibleValues.Count, 0);
             Assert.IsTrue(nb.ValueSet);
             Assert.AreEqual(6, nb.Value);
         }
